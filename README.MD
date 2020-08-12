@@ -60,6 +60,8 @@ func main() {
 	...
 	conn, err := l.Accept()
 	...
+	//This will remove the IP from the cache once this function closes
+	defer proxy.Purge(conn.RemoteAddr())
 
 	//This will resolve the proxies address and obtain the true visitors IP address
 	realIP, err := proxy.Resolve(conn.RemoteAddr())
@@ -69,6 +71,43 @@ func main() {
 	}
 
 	fmt.Println(realIP)
+	...
+}
+
+```
+
+Kill the connection from the remote proxy
+
+```go
+package main
+
+import (
+	"fmt"
+	"github.com/syrinsecurity/doxyproxy"
+)
+
+var proxy = doxyproxy.New("http://example.com:port/", "appName", "key goes here")
+
+func main() {
+
+	//Standard server, could be anything; http, RTC, gRPC, tcp/udp etc
+	l, err := net.Listen("tcp", ":80")
+	...
+	conn, err := l.Accept()
+	...
+	//This will remove the IP from the cache once this function closes
+	defer proxy.Purge(conn.RemoteAddr())
+
+
+	//This will kill the connection from the proxy
+	err := proxy.Kill(conn.RemoteAddr())
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	//It is good practise to still close the connection straight after
+	conn.Close()
+
 	...
 }
 
