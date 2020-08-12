@@ -1,7 +1,9 @@
 package doxyproxy
 
 import (
+	"fmt"
 	"net/http"
+	"net/url"
 	"sync"
 	"time"
 )
@@ -32,7 +34,7 @@ type IPEntry struct {
 func New(api string, app string, key string) *Proxy {
 
 	return &Proxy{
-		API: api + "/" + app + "/",
+		API: fmt.Sprintf("%s/%s/", api, url.PathEscape(app)),
 		App: app,
 		Key: key,
 

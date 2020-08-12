@@ -40,3 +40,36 @@ Features include:
 ## Install
 
 > go get github.com/syrinsecurity/doxyproxy
+
+# Examples
+
+```go
+package main
+
+import (
+	"fmt"
+	"github.com/syrinsecurity/doxyproxy"
+)
+
+var proxy = doxyproxy.New("http://example.com:port/", "appName", "key goes here")
+
+func main() {
+
+	//Standard server, could be anything; http, RTC, gRPC, tcp/udp etc
+	l, err := net.Listen("tcp", ":80")
+	...
+	conn, err := l.Accept()
+	...
+
+	//This will resolve the proxies address and obtain the true visitors IP address
+	realIP, err := proxy.Resolve(conn.RemoteAddr())
+	if err != nil {
+		fmt.Println(err)
+		realIP = conn.RemoteAddr().String()
+	}
+
+	fmt.Println(realIP)
+	...
+}
+
+```
