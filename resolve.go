@@ -21,6 +21,8 @@ func (p *Proxy) Resolve(addr net.Addr) (string, error) {
 		}
 	}
 
+	entry.proxy = p
+
 	ip, err := entry.Fetch()
 	if err != nil {
 		return "", err

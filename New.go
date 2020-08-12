@@ -32,7 +32,7 @@ type IPEntry struct {
 func New(api string, app string, key string) *Proxy {
 
 	return &Proxy{
-		API: api,
+		API: api + "/" + app,
 		App: app,
 		Key: key,
 
