@@ -48,6 +48,8 @@ package main
 
 import (
 	"fmt"
+	"net"
+
 	"github.com/syrinsecurity/doxyproxy"
 )
 
@@ -83,6 +85,8 @@ package main
 
 import (
 	"fmt"
+	"net"
+	
 	"github.com/syrinsecurity/doxyproxy"
 )
 
