@@ -22,6 +22,7 @@ func (p *Proxy) Resolve(addr net.Addr) (string, error) {
 	}
 
 	entry.proxy = p
+	entry.ID = port
 
 	ip, err := entry.Fetch()
 	if err != nil {
