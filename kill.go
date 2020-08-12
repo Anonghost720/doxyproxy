@@ -14,15 +14,22 @@ func (p *Proxy) Kill(addr net.Addr) error {
 	}
 
 	p.mutex.RLock()
-	_, ok := p.cache[port]
+	entry, ok := p.cache[port]
 	p.mutex.RUnlock()
 	if ok == true {
 		p.mutex.Lock()
 		delete(p.cache, port)
 		p.mutex.Unlock()
+
+		return entry.Kill()
 	}
 
-	return nil
+	entry = IPEntry{
+		ID:    port,
+		proxy: p,
+	}
+
+	return entry.Kill()
 }
 
 //Kill will disconnect the user from the proxy
